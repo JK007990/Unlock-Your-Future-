@@ -4,66 +4,330 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EduSpark - All in One Ecosystem</title>
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        
         body {
             background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
-            min-height: 100vh; overflow-x: hidden; position: relative;
+            min-height: 100vh; 
+            overflow-x: hidden; 
+            position: relative;
         }
 
         /* Background Animation */
-        .background-animation { position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: -1; overflow: hidden; }
-        .bubble { position: absolute; border-radius: 50%; background: linear-gradient(45deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.15)); filter: blur(40px); animation: floatAround 20s infinite alternate ease-in-out; }
+        .background-animation { 
+            position: absolute; 
+            width: 100%; 
+            height: 100%; 
+            top: 0; 
+            left: 0; 
+            z-index: -1; 
+            overflow: hidden; 
+        }
+        
+        .bubble { 
+            position: absolute; 
+            border-radius: 50%; 
+            background: linear-gradient(45deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.15)); 
+            filter: blur(40px);
+            animation: floatAround 20s infinite alternate ease-in-out; 
+        }
+        
         .bubble:nth-child(1) { width: 400px; height: 400px; top: -10%; left: -10%; }
         .bubble:nth-child(2) { width: 500px; height: 500px; bottom: -10%; right: -10%; }
-        @keyframes floatAround { 0% { transform: translateY(0); } 100% { transform: translateY(50px); } }
+
+        @keyframes floatAround { 
+            0% { transform: translateY(0); } 
+            100% { transform: translateY(50px); } 
+        }
+
+        /* Pages Toggle Logic */
+        .page { display: none; }
+        .page.active { display: block !important; animation: fadeIn 0.5s ease-in-out; }
+        
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(15px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
 
         /* Shared Glass Card Style */
-        .glass-card { background: rgba(255, 255, 255, 0.45); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); border: 1px solid rgba(255, 255, 255, 0.6); border-radius: 32px; padding: 40px; box-shadow: 0 28px 50px rgba(31, 38, 135, 0.08); }
-        .highlight { background: linear-gradient(45deg, #4f46e5, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; }
+        .glass-card { 
+            background: rgba(255, 255, 255, 0.45); 
+            backdrop-filter: blur(20px) saturate(180%); 
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.6); 
+            border-radius: 32px; 
+            padding: 40px; 
+            box-shadow: 0 28px 50px rgba(31, 38, 135, 0.08); 
+        }
+        
+        .highlight { 
+            background: linear-gradient(45deg, #4f46e5, #a855f7); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            font-weight: 800; 
+        }
+
+        /* HEADER STYLES */
+        header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 25px 5%; 
+        }
+        
+        .logo { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            font-size: 1.5rem; 
+            font-weight: 800; 
+            color: #4f46e5; 
+            cursor: pointer; 
+        }
+        
+        .logo i { 
+            font-size: 1.8rem; 
+            background: linear-gradient(45deg, #4f46e5, #06b6d4); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+        }
+        
+        nav { 
+            display: flex; 
+            gap: 20px; 
+            align-items: center; 
+        }
+        
+        .nav-btn { 
+            text-decoration: none; 
+            color: #4b5563; 
+            font-weight: 600; 
+            padding: 10px 20px; 
+            border-radius: 50px; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+        }
+        
+        .nav-btn:hover, .nav-btn.active-nav { 
+            color: #4f46e5; 
+            background: rgba(255, 255, 255, 0.6); 
+        }
+        
+        .login-btn { 
+            background: #4f46e5; 
+            color: #fff !important; 
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3); 
+        }
 
         /* HOME PAGE STYLES */
-        header { display: flex; justify-content: space-between; align-items: center; padding: 25px 5%; }
-        .logo { display: flex; align-items: center; gap: 10px; font-size: 1.5rem; font-weight: 800; color: #4f46e5; cursor: pointer; }
-        .logo i { font-size: 1.8rem; background: linear-gradient(45deg, #4f46e5, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        nav { display: flex; gap: 20px; align-items: center; }
-        .nav-btn { text-decoration: none; color: #4b5563; font-weight: 600; padding: 10px 20px; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; }
-        .nav-btn:hover { color: #4f46e5; background: rgba(255, 255, 255, 0.6); }
-        .login-btn { background: #4f46e5; color: #fff !important; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3); }
-        .hero-section { max-width: 1300px; margin: 0 auto; padding: 20px 5%; }
-        .content-container { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+        .hero-section { 
+            max-width: 1300px; 
+            margin: 0 auto; 
+            padding: 20px 5%; 
+        }
         
-        /* Floating Animation Elements */
-        .animation-container { display: flex; justify-content: center; align-items: center; }
-        .edu-animation { position: relative; width: 300px; height: 300px; }
-        .core-glow { position: absolute; width: 150px; height: 150px; background: radial-gradient(circle, rgba(168,85,247,0.4) 0%, rgba(255,255,255,0) 70%); top: 25%; left: 25%; animation: pulse 3s infinite ease-in-out; }
-        .floating-book, .floating-globe, .floating-pencil { position: absolute; background: white; padding: 20px; border-radius: 24px; font-size: 2.5rem; box-shadow: 0 20px 40px rgba(0,0,0,0.05); animation: float 4s infinite ease-in-out; }
+        .content-container { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 50px; 
+            align-items: center; 
+        }
+        
+        .animation-container { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+        }
+        
+        .edu-animation { 
+            position: relative; 
+            width: 300px; 
+            height: 300px; 
+        }
+        
+        .core-glow { 
+            position: absolute; 
+            width: 150px; 
+            height: 150px; 
+            background: radial-gradient(circle, rgba(168,85,247,0.4) 0%, rgba(255,255,255,0) 70%); 
+            top: 25%; 
+            left: 25%;
+            animation: pulse 3s infinite ease-in-out; 
+        }
+        
+        .floating-book, .floating-globe, .floating-pencil { 
+            position: absolute; 
+            background: white; 
+            padding: 20px; 
+            border-radius: 24px; 
+            font-size: 2.5rem; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            animation: float 4s infinite ease-in-out; 
+        }
+        
         .floating-book { top: 10%; left: 20%; color: #a855f7; }
         .floating-globe { bottom: 10%; left: 10%; color: #06b6d4; animation-delay: 1.3s; }
         .floating-pencil { top: 40%; right: 10%; color: #ec4899; animation-delay: 2.6s; }
         
-        @keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(5deg); } }
-        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.3); opacity: 0.8; } }
-
-        .glass-card h1 { font-size: 3rem; font-weight: 800; color: #1f2937; line-height: 1.2; margin-bottom: 20px; }
-        .glass-card p { color: #4b5563; font-size: 1.1rem; line-height: 1.6; margin-bottom: 40px; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); } 
+            50% { transform: translateY(-20px); } 
+        }
         
-        /* Buttons */
-        .action-buttons { display: flex; flex-direction: column; gap: 15px; }
-        .main-btn { display: flex; align-items: center; gap: 15px; background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(255, 255, 255, 0.8); padding: 18px 25px; border-radius: 20px; font-size: 1.1rem; font-weight: 600; color: #374151; cursor: pointer; transition: all 0.3s ease; text-align: left; }
-        .main-btn:hover { background: #4f46e5; color: white; transform: translateX(10px); }
-        .main-btn i { color: #4f46e5; width: 24px; font-size: 1.2rem; }
+        @keyframes pulse { 
+            0%, 100% { transform: scale(1); opacity: 0.5; } 
+            50% { transform: scale(1.3); opacity: 0.8; } 
+        }
+        
+        .glass-card h1 { 
+            font-size: 3rem; 
+            font-weight: 800; 
+            color: #1f2937; 
+            line-height: 1.2; 
+            margin-bottom: 20px; 
+        }
+        
+        .glass-card p { 
+            color: #4b5563; 
+            font-size: 1.1rem; 
+            line-height: 1.6; 
+            margin-bottom: 40px; 
+        }
+        
+        .action-buttons { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+        }
+        
+        .main-btn { 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+            background: rgba(255, 255, 255, 0.7); 
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            padding: 18px 25px; 
+            border-radius: 20px; 
+            font-size: 1.1rem; 
+            font-weight: 600; 
+            color: #374151; 
+            cursor: pointer; 
+            transition: all 0.3s ease;
+            text-align: left; 
+        }
+        
+        .main-btn:hover { 
+            background: #4f46e5; 
+            color: white; 
+            transform: translateX(10px); 
+        }
+        
+        .main-btn i { 
+            color: #4f46e5; 
+            width: 24px; 
+            font-size: 1.2rem; 
+        }
+        
         .main-btn:hover i { color: white; }
 
-        @media (max-width: 968px) { .content-container { grid-template-columns: 1fr; text-align: center; } .main-btn { justify-content: center; } }
+        /* ABOUT US STYLES */
+        .about-section { max-width: 1200px; margin: 0 auto; padding: 40px 5%; }
+        .dep-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; }
+        .open-dep-btn { background: #4f46e5; color: white; border: none; padding: 8px 28px; border-radius: 50px; font-weight: 600; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 6px; margin: 15px auto 0 auto; transition: all 0.3s; box-shadow: 0 4px 12px rgba(79,70,229,0.2); }
+        .open-dep-btn:hover { background: #3730a3; transform: translateY(-2px); }
+        
+        /* New Grid Layout for Members (ဝင်လိုက်တာနဲ့ အကုန်တန်းမြင်ရမည့်စနစ်) */
+        .members-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .liquid-glass {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.2) 100%);
+            backdrop-filter: blur(25px) saturate(200%); -webkit-backdrop-filter: blur(25px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.7); border-radius: 30px;
+            box-shadow: inset 0 20px 20px -10px rgba(255,255,255,0.6), 0 30px 60px rgba(79, 70, 229, 0.1);
+            padding: 35px 25px; text-align: center;
+            display: flex; flex-direction: column; justify-content: space-between;
+            cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease;
+            min-height: 380px;
+        }
+        .liquid-glass:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(79, 70, 229, 0.15);
+        }
+
+        .member-avatar { width: 110px; height: 110px; border-radius: 50%; background: #e2e8f0; border: 4px solid white; box-shadow: 0 8px 20px rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto; overflow: hidden; }
+        .member-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .score-badge { display: inline-flex; align-items: center; gap: 5px; color: white; padding: 6px 14px; border-radius: 50px; font-size: 0.8rem; font-weight: 800; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-bottom: 15px; text-transform: uppercase; }
+        
+        /* Modal Popup System for Details (နှိပ်ကြည့်ရင် Detail ပြမည့်စနစ်) */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(8px);
+            z-index: 999; display: none; align-items: center; justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+        .modal-content {
+            background: white; border-radius: 30px; max-width: 500px; width: 90%;
+            padding: 40px; box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            position: relative; animation: scaleUp 0.3s ease;
+        }
+        @keyframes scaleUp { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .close-modal { position: absolute; top: 20px; right: 25px; font-size: 1.5rem; color: #9ca3af; cursor: pointer; transition: color 0.3s; }
+        .close-modal:hover { color: #1f2937; }
+        .member-quote { background: rgba(79, 70, 229, 0.05); border-left: 4px solid #4f46e5; padding: 15px; border-radius: 4px 14px 14px 4px; margin-top: 20px; text-align: left; font-style: italic; }
+        .member-quote p { color: #4b5563; font-size: 0.9rem; line-height: 1.5; }
+
+        /* CONTACT US STYLES */
+        .contact-page-body { display: flex; align-items: center; justify-content: center; padding: 40px 20px; }
+        .bg-circle { position: absolute; border-radius: 50%; filter: blur(60px); z-index: -1; opacity: 0.6; }
+        .circle-1 { width: 300px; height: 300px; background: #4f46e5; top: -10%; left: -10%; }
+        .circle-2 { width: 300px; height: 300px; background: #a855f7; bottom: -10%; right: -10%; }
+        .contact-container { width: 100%; max-width: 1050px; background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.6); border-radius: 24px; box-shadow: 0 20px 40px rgba(31, 38, 135, 0.06); display: grid; grid-template-columns: 1fr 1.2fr; overflow: hidden; }
+        .contact-sidebar { background: rgba(255, 255, 255, 0.4); padding: 40px 30px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid rgba(255,255,255,0.4); }
+        .info-title { font-size: 2rem; font-weight: 800; color: #1f2937; margin-bottom: 15px; }
+        .info-desc { color: #6b7280; font-size: 0.95rem; line-height: 1.6; margin-bottom: 30px; }
+        .info-links-list { display: flex; flex-direction: column; gap: 20px; }
+        .info-item { display: flex; align-items: center; gap: 15px; text-decoration: none; color: #4b5563; font-weight: 600; transition: all 0.3s; padding: 12px; border-radius: 16px; background: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.5); }
+        .info-item i { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: white; flex-shrink: 0; }
+        .icon-email { background: linear-gradient(135deg, #4f46e5, #6366f1); }
+        .icon-telegram { background: linear-gradient(135deg, #0088cc, #229ed9); }
+        .icon-facebook { background: linear-gradient(135deg, #1877f2, #3b5998); }
+        .contact-form-area { padding: 40px; background: rgba(255, 255, 255, 0.2); display: flex; flex-direction: column; justify-content: center; }
+        .form-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        .contact-input-group { position: relative; display: flex; flex-direction: column; }
+        .contact-input-group label { font-size: 0.8rem; font-weight: 700; color: #4b5563; margin-bottom: 8px; text-transform: uppercase; }
+        .contact-input-group input, .contact-input-group textarea { width: 100%; padding: 14px 18px 14px 45px; background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 14px; font-size: 0.95rem; color: #1f2937; outline: none; }
+        .contact-input-group textarea { padding-top: 40px; }
+        .contact-input-group i { position: absolute; left: 18px; top: 38px; color: #9ca3af; font-size: 1rem; }
+        .contact-input-group textarea~i { top: 42px; }
+        .contact-input-group input:focus, .contact-input-group textarea:focus { border-color: #4f46e5; background: white; }
+        .send-btn { background: linear-gradient(45deg, #4f46e5, #a855f7); color: white; border: none; padding: 15px 30px; border-radius: 14px; font-size: 1rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 10px 25px rgba(79, 70, 229, 0.25); margin-top: 10px; }
+
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 968px) { 
+            .content-container { grid-template-columns: 1fr; text-align: center; } 
+            .main-btn { justify-content: center; } 
+            .about-section div[style*="grid-template-columns: repeat"] { grid-template-columns: 1fr !important; gap: 20px !important; }
+        }
+        @media (max-width: 768px) {
+            .contact-container { grid-template-columns: 1fr; border-radius: 16px; }
+            .contact-sidebar { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.3); padding: 30px 20px; }
+            .contact-form-area { padding: 30px 20px; }
+            .info-title { font-size: 1.6rem; }
+            .info-item { padding: 10px; }
+            .info-item p { word-break: break-all; }
+        }
     </style>
 </head>
 <body>
-
     <!-- Background Bubble Animation -->
     <div class="background-animation">
         <div class="bubble"></div>
@@ -72,40 +336,339 @@
 
     <!-- Navigation Header -->
     <header>
-        <div class="logo"><i class="fa-solid fa-graduation-cap"></i><span>Unlock Your Future</span></div>
+        <div class="logo" onclick="showPage('home-page', this)"><i class="fa-solid fa-graduation-cap"></i><span>EduSpark</span></div>
         <nav>
-            <a class="nav-btn" href="./Home page/About Us page.html"  >About Us</a>
-            <a class="nav-btn" href="./Home page/Contact Us.html"  >Contact Us</a>
-            <a class="nav-btn login-btn" href="./Home page/Login page.html"   >Login</a>
+            <a class="nav-btn active-nav" onclick="showPage('home-page', this)">Home</a>
+            <a class="nav-btn" onclick="showPage('about-page', this)">About Us</a>
+            <a class="nav-btn" onclick="showPage('contact-page', this)">Contact Us</a>
+            <a class="nav-btn login-btn" href="#">Login</a>
         </nav>
     </header>
 
-    <!-- Main Hero Section -->
-    <main class="hero-section">
-        <div class="content-container">
-            <!-- Left Side Animation -->
-            <div class="animation-container">
-                <div class="edu-animation">
-                    <div class="floating-book"><i class="fa-solid fa-book-open"></i></div>
-                    <div class="floating-globe"><i class="fa-solid fa-globe"></i></div>
-                    <div class="floating-pencil"><i class="fa-solid fa-pencil"></i></div>
-                    <div class="core-glow"></div>
+    <!-- 1. HOME PAGE SECTION -->
+    <div id="home-page" class="page active">
+        <main class="hero-section">
+            <div class="content-container">
+                <div class="animation-container">
+                    <div class="edu-animation">
+                        <div class="floating-book"><i class="fa-solid fa-book-open"></i></div>
+                        <div class="floating-globe"><i class="fa-solid fa-globe"></i></div>
+                        <div class="floating-pencil"><i class="fa-solid fa-pencil"></i></div>
+                        <div class="core-glow"></div>
+                    </div>
+                </div>
+                <div class="glass-card">
+                    <h1>Unlock Your Future <br><span class="highlight">100% Free</span></h1>
+                    <p>Knowledge is power. Dive into our interactive ecosystem and learn without limits today!</p>
+                    <div class="action-buttons">
+                        <button class="main-btn"><i class="fa-solid fa-layer-group"></i> Lessons Plan</button>
+                        <button class="main-btn"><i class="fa-solid fa-laptop-code"></i> Program</button>
+                        <button class="main-btn"><i class="fa-solid fa-comments"></i> Discussion</button>
+                        <button class="main-btn"><i class="fa-solid fa-book"></i> Library</button>
+                    </div>
                 </div>
             </div>
-            
-            <!-- Right Side Main Card -->
-            <div class="glass-card">
-                <h1>Unlock Your Future <br><span class="highlight">100% Free</span></h1>
-                <p>Knowledge is power. Dive into our interactive ecosystem and learn without limits today!</p>
-                <div class="action-buttons">
-                    <button class="main-btn"><i class="fa-solid fa-layer-group"></i> Lessons Plan</button>
-                    <button class="main-btn"><i class="fa-solid fa-laptop-code"></i> Program</button>
-                    <button class="main-btn"><i class="fa-solid fa-comments"></i> Discussion</button>
-                    <button class="main-btn"><i class="fa-solid fa-book"></i> Library</button>
+        </main>
+    </div>
+
+    <!-- 2. ABOUT US PAGE SECTION -->
+    <div id="about-page" class="page">
+        <div id="structure-main-page" class="page active">
+            <main class="about-section">
+                <div style="text-align: center; margin-bottom: 50px;">
+                    <h2 style="font-size: 2.8rem; font-weight: 800; color: #1f2937;">About Our <span class="highlight">Academy</span></h2>
+                    <p style="color: #6b7280; margin-top: 10px;">အဆင့်မြှင့်ပညာရေး</p>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-bottom: 60px;">
+                    <div class="glass-card" style="padding: 30px; border-radius: 24px; text-align: center;">
+                        <div style="font-size: 2.5rem; color: #4f46e5; margin-bottom: 15px;"><i class="fa-solid fa-eye"></i></div>
+                        <h3 style="margin-bottom: 15px; color: #1f2937;">Our Vision</h3>
+                        <p style="color: #4b5563; line-height: 1.7;">Our vision is to build an inclusive society that ensures equitable education and non-discrimination for youth, while creating meaningful and sustainable opportunities for their advancement.</p>
+                    </div>
+                    <div class="glass-card" style="padding: 30px; border-radius: 24px; text-align: center;">
+                        <div style="font-size: 2.5rem; color: #06b6d4; margin-bottom: 15px;"><i class="fa-solid fa-bullseye"></i></div>
+                        <h3 style="margin-bottom: 15px; color: #1f2937;">Our Mission</h3>
+                        <p style="color: #4b5563; line-height: 1.7;">We are dedicated to ensuring that youth have equitable access to education anytime, anywhere. We strive to provide impactful knowledge and valuable opportunities, while empowering young people to unite and share their collective skills, knowledge, and talents.</p>
+                    </div>
+                    <div class="glass-card" style="padding: 30px; border-radius: 24px; text-align: center;">
+                        <div style="font-size: 2.5rem; color: #ec4899; margin-bottom: 15px;"><i class="fa-solid fa-trophy"></i></div>
+                        <h3 style="margin-bottom: 15px; color: #1f2937;">Our Goal</h3>
+                        <p style="color: #4b5563; line-height: 1.7;">To enhance youth development and ensure equal educational opportunities for all children.</p>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 60px;">
+                    <h3 style="font-size: 2rem; font-weight: 800; color: #1f2937; margin-bottom: 40px; text-align: center;">Our Academy <span class="highlight">Structure</span></h3>
+                    <div style="display: flex; justify-content: center; margin-bottom: 30px;">
+                        <div class="glass-card dep-card" style="width: 100%; max-width: 480px; padding: 30px 25px; border-radius: 24px; text-align: center; border: 2px solid #ea580c; background: rgba(254, 243, 199, 0.35); box-shadow: 0 20px 40px rgba(234, 88, 12, 0.12);">
+                            <div style="font-size: 2.2rem; color: #ea580c; margin-bottom: 12px;"><i class="fa-solid fa-user-gear"></i></div>
+                            <h4 style="font-size: 1.4rem; color: #1f2937; font-weight: 800; letter-spacing: 0.5px;">Board of Directors</h4>
+                            <p style="font-size: 0.85rem; color: #ea580c; font-weight: 700; margin-top: 3px; text-transform: uppercase; letter-spacing: 1px;">Overall Academy Management</p>
+                            <button class="open-dep-btn" style="background: #ea580c;" onclick="loadDepartment('BOD')"><span>Open</span> <i class="fa-solid fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin: -15px 0 35px 0; color: #4f46e5; font-size: 1.6rem;"><i class="fa-solid fa-arrow-down-flow-links"></i></div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; max-width: 1100px; margin: 0 auto; padding: 10px;">
+                        <div class="glass-card dep-card" style="padding: 25px 20px; border-radius: 22px; text-align: center; border-top: 5px solid #4f46e5; display: flex; flex-direction: column; justify-content: space-between; min-height: 160px;">
+                            <div><div style="font-size: 1.8rem; color: #4f46e5; margin-bottom: 12px;"><i class="fa-solid fa-chalkboard-user"></i></div><h5 style="font-size: 1.05rem; color: #1f2937; font-weight: 800;">MT Teaching Department</h5></div>
+                            <button class="open-dep-btn" onclick="loadDepartment('MT')"><span>Open</span> <i class="fa-solid fa-arrow-right"></i></button>
+                        </div>
+                        <div class="glass-card dep-card" style="padding: 25px 20px; border-radius: 22px; text-align: center; border-top: 5px solid #06b6d4; display: flex; flex-direction: column; justify-content: space-between; min-height: 160px;">
+                            <div><div style="font-size: 1.8rem; color: #06b6d4; margin-bottom: 12px;"><i class="fa-solid fa-user-graduate"></i></div><h5 style="font-size: 1.05rem; color: #1f2937; font-weight: 800;">AT Teaching Department</h5></div>
+                            <button class="open-dep-btn" style="background: #06b6d4;" onclick="loadDepartment('AT')"><span>Open</span> <i class="fa-solid fa-arrow-right"></i></button>
+                        </div>
+                        <div class="glass-card dep-card" style="padding: 25px 20px; border-radius: 22px; text-align: center; border-top: 5px solid #ec4899; display: flex; flex-direction: column; justify-content: space-between; min-height: 160px;">
+                            <div><div style="font-size: 1.8rem; color: #ec4899; margin-bottom: 12px;"><i class="fa-solid fa-hashtag"></i></div><h5 style="font-size: 1.05rem; color: #1f2937; font-weight: 800;">Social Media Department</h5></div>
+                            <button class="open-dep-btn" style="background: #ec4899;" onclick="loadDepartment('Social')"><span>Open</span> <i class="fa-solid fa-arrow-right"></i></button>
+                        </div>
+                        <div class="glass-card dep-card" style="padding: 25px 20px; border-radius: 22px; text-align: center; border-top: 5px solid #f59e0b; display: flex; flex-direction: column; justify-content: space-between; min-height: 160px;">
+                            <div><div style="font-size: 1.8rem; color: #f59e0b; margin-bottom: 12px;"><i class="fa-solid fa-laptop-code"></i></div><h5 style="font-size: 1.05rem; color: #1f2937; font-weight: 800;">IT Department</h5></div>
+                            <button class="open-dep-btn" style="background: #f59e0b;" onclick="loadDepartment('IT')"><span>Open</span> <i class="fa-solid fa-arrow-right"></i></button>
+                        </div>
+                        <div class="glass-card dep-card" style="padding: 25px 20px; border-radius: 22px; text-align: center; border-top: 5px solid #10b981; display: flex; flex-direction: column; justify-content: space-between; min-height: 160px;">
+                            <div><div style="font-size: 1.8rem; color: #10b981; margin-bottom: 12px;"><i class="fa-solid fa-list-check"></i></div><h5 style="font-size: 1.05rem; color: #1f2937; font-weight: 800;">Program Management</h5></div>
+                            <button class="open-dep-btn" style="background: #10b981;" onclick="loadDepartment('Program')"><span>Open</span> <i class="fa-solid fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card" style="padding: 40px; border-radius: 24px; margin-bottom: 50px;">
+                    <h3 style="font-size: 1.8rem; color: #1f2937; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;"><i class="fa-solid fa-shield-halved" style="color: #4f46e5;"></i> Academy Policies</h3>
+                    <div style="color: #4b5563; line-height: 1.8; font-size: 0.95rem;">
+                        <p style="margin-bottom: 12px;">1. Team Policy - All members must strictly refrain from any form of discrimination, whether within the team or during external operations.</p>
+                        <p style="margin-bottom: 12px;">2. Volunteer Policy - Long-Term and Short-Term guidelines apply to all accepted volunteers.</p>
+                        <p style="margin-bottom: 12px;">3. Collaboration & Partnership Policy - Partner organizations collaborating with us must be entities that focus on child and youth development.</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+        
+        <!-- ပြုပြင်ထားသော Members List စာမျက်နှာ (Grid Layout ပုံစံ) -->
+        <div id="members-slider-page" class="page">
+            <main style="max-width: 1200px; margin: 0 auto; padding: 40px 5%;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; flex-wrap: wrap; gap: 15px;">
+                    <div>
+                        <span id="dep-mini-title" style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; color: #4f46e5; font-weight: 800;">Faculty Name</span>
+                        <h2 id="dep-main-title" style="font-size: 2.4rem; font-weight: 800; color: #1f2937; margin-top: 5px;">Department <span class="highlight">Members</span></h2>
+                    </div>
+                    <button class="open-dep-btn" style="background: #ef4444; margin: 0; padding: 10px 24px;" onclick="closeMembersPage()"><i class="fa-solid fa-arrow-left"></i> Back to Structure</button>
+                </div>
+
+                <!-- ဝင်လိုက်တာနဲ့ အကုန်တန်းမြင်ရမည့် နေရာကွက် -->
+                <div id="members-grid-container" class="members-grid"></div>
+            </main>
+        </div>
+    </div>
+
+    <!-- 3. CONTACT US PAGE SECTION -->
+    <div id="contact-page" class="page">
+        <div class="contact-page-body">
+            <div class="contact-container">
+                <div class="contact-sidebar">
+                    <div>
+                        <h2 class="info-title">Contact <span class="highlight">Us</span></h2>
+                        <p class="info-desc">ကျွန်ုပ်တို့ အကယ်ဒမီသို့ တိုက်ရိုက်ဆက်သွယ် မေးမြန်းနိုင်ရန် အောက်ပါ အီးမေးလ်နှင့် လူမှုကွန်ရက်စာမျက်နှာများမှတစ်ဆင့် ဆက်သွယ်နိုင်ပါသည်။</p>
+                        <div class="info-links-list">
+                            </a>
+                            <a href="https://t.me/your_telegram_username" target="_blank" class="info-item">
+                                <i class="fa-brands fa-telegram icon-telegram"></i>
+                                <div>
+                                    <p style="font-size: 0.75rem; color: #9ca3af; text-transform: uppercase;">Telegram Channel</p>
+                                    <p style="font-size: 0.9rem;">@UNLOCKYOURFUTURE_ORG</p>
+                                </div>
+                            </a>
+                            <a href="https://facebook.com/your_page_link" target="_blank" class="info-item">
+                                <i class="fa-brands fa-facebook-f icon-facebook"></i>
+                                <div>
+                                    <p style="font-size: 0.75rem; color: #9ca3af; text-transform: uppercase;">Facebook Page</p>
+                                    <p style="font-size: 0.9rem;">Your Academy Facebook</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.8rem; color: #9ca3af; margin-top: 30px;">&copy; 2026 Academy Eco-system. All rights reserved.</p>
+                </div>
+                <div class="contact-form-area">
+                    <h3 style="font-size: 1.3rem; color: #1f2937; margin-bottom: 20px; font-weight: 800;">Send Us A Message</h3>
+                    <form class="form-grid" action="https://formspree.io/f/mpqgjdko" method="POST">
+                        <div class="contact-input-group">
+                            <label>Your Name</label>
+                            <input type="text" name="name" placeholder="အမည်ရိုက်ထည့်ပါ" required>
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <div class="contact-input-group">
+                            <label>Email Address</label>
+                            <input type="email" name="email" placeholder="အီးမေးလ်ရိုက်ထည့်ပါ" required>
+                            <i class="fa-solid fa-envelope"></i>
+                        </div>
+                        <div class="contact-input-group">
+                            <label>Message</label>
+                            <textarea name="message" rows="5" placeholder="မေးမြန်းလိုသော အကြောင်းအရာများကို ဤနေရာတွင် ရေးသားနိုင်ပါသည်..." required></textarea>
+                            <i class="fa-solid fa-comment-dots"></i>
+                        </div>
+                        <button type="submit" class="send-btn">
+                            <span>Send Message</span> <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 
+    <!-- DETAIL POPUP MODAL -->
+    <div id="detail-modal" class="modal-overlay" onclick="closeModal(event)">
+        <div class="modal-content">
+            <span class="close-modal" onclick="document.getElementById('detail-modal').style.display='none'">&times;</span>
+            <div id="modal-body-content"></div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        function showPage(pageId, element) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            const targetPage = document.getElementById(pageId);
+            if(targetPage) targetPage.classList.add('active');
+            
+            if(pageId === 'about-page') {
+                document.getElementById('members-slider-page').classList.remove('active');
+                document.getElementById('structure-main-page').classList.add('active');
+            }
+
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => btn.classList.remove('active-nav'));
+            if(element && element.classList.contains('nav-btn')) {
+                element.classList.add('active-nav');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        const departmentData = {
+            BOD: {
+                mini: "Executive Council", main: "Board of Directors", accent: "#ea580c",
+                members: [
+                    { name: "Mr. Bhone Pyae Lyan", role: "IT Department", score: "Director", info: "Visionary leader with 10+ years in international educational management and youth empowerment projects.", quote: "True governance lies in empowering the next generation with equitable tools.", img: "Bhone Pyae Lyan.jpg" },
+                    { name: "Mr. Tin Htoo Kyaw", role: "AT Department", score: "Director", info: "Specialized in academic compliance, international relations, and structural growth of non-profit education frameworks.", quote: "Quality high school education is the fundamental birthright of every young mind.", img: "Tin Htoo Kyaw.jpg" }
+                ]
+            },
+            MT: {
+                mini: "MT Teaching Faculty", main: "GED Core Teachers", accent: "#4f46e5",
+                members: [
+                    { name: "Instructor 1", role: "Lead Instructor (Mathematics)", score: "GED Score: 185/200", info: "Over 5 years of experience specialized in helping youth pass their GED Math exam with top scores.", quote: "Education is not the learning of facts, but the training of the mind to think.", img: "-" },
+                    { name: "Instructor 2", role: "Senior Specialist (RLA & Social)", score: "GED Score: 178/200", info: "Dedicated mentor focusing on advanced Reading, Language Arts, and critical analytical thinking skills.", quote: "I believe that every student has a unique spark. My mission is to guide them to unlock it fully.", img: "-" }
+                ]
+            },
+            AT: {
+                mini: "AT Teaching Team", main: "Assistant Instructors", accent: "#06b6d4",
+                members: [
+                    { name: "Assistant 1", role: "Assistant Teacher (Science)", score: "GED Score: 172/200", info: "Passionate educator specializing in interactive experiments and simplifying GED science theories.", quote: "Science is a way of thinking much more than it is a body of knowledge.", img: "-" },
+                    { name: "Assistant 2", role: "Tutor & Homework Mentor", score: "GED Score: 170/200", info: "Focuses on providing step-by-step guidance, mock test analysis, and grading student responses.", quote: "Consistency and supportive environment can build wonders in learning journey.", img: "-" }
+                ]
+            },
+            Social: {
+                mini: "Media & Outreach", main: "Social Media Department", accent: "#ec4899",
+                members: [
+                    { name: "Media Lead", role: "Content Creator & Designer", score: "Creative Lead", info: "Manages social media presence, video production, graphic aesthetics, and announcement feeds.", quote: "Design is intelligence made visible. We bridge academy goals with interactive visual insights.", img: "-" }
+                ]
+            },
+            IT: {
+                mini: "Engineering Faculty", main: "IT Systems & Platforms", accent: "#f59e0b",
+                members: [
+                    { name: "Developer 1", role: "Full Stack Web Developer", score: "Tech Manager", info: "Maintains the cloud ecosystems, interactive responsive web codes, security modules, and servers.", quote: "Simple code builds magnificent solutions. Ensuring seamless access to digital education assets.", img: "-" }
+                ]
+            },
+            Program: {
+                mini: "Operations Division", main: "Program Management", accent: "#10b981",
+                members: [
+                    { name: "Coordinator 1", role: "Student Coordinator", score: "Operations Lead", info: "Handles class schedule workflows, student enrollment tracking, curriculum pipelines, and community support.", quote: "Organization is the key to providing impactful learning structures smoothly.", img: "-" }
+                ]
+            }
+        };
+
+        // တန်းစီပြသမည့် စနစ်သစ်
+        function loadDepartment(depKey) {
+            const data = departmentData[depKey];
+            if (!data) return;
+
+            document.getElementById('dep-mini-title').innerText = data.mini;
+            document.getElementById('dep-mini-title').style.color = data.accent;
+            document.getElementById('dep-main-title').innerHTML = `${data.main.split(' ')[0]} <span class="highlight" style="background: linear-gradient(45deg, ${data.accent}, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">${data.main.split(' ').slice(1).join(' ')}</span>`;
+
+            let gridHtml = "";
+            data.members.forEach((member, idx) => {
+                gridHtml += `
+                <div class="liquid-glass" style="border-top: 5px solid ${data.accent}" onclick="openDetail('${depKey}', ${idx})">
+                    <div>
+                        <div class="member-avatar">
+                            <img src="${member.img}" alt="${member.name}" onerror="this.style.display='none'; this.parentNode.innerHTML='<i class=\'fa-solid fa-user\' style=\'font-size:2.8rem;color:#9ca3af;\'></i>'">
+                        </div>
+                        <div class="score-badge" style="background: linear-gradient(135deg, ${data.accent}, #a855f7);">
+                            <i class="fa-solid fa-star"></i> <span>${member.score}</span>
+                        </div>
+                        <h4 style="font-size: 1.3rem; color: #1f2937; font-weight: 800; margin-bottom:5px;">${member.name}</h4>
+                        <p style="font-size: 0.85rem; color: ${data.accent}; font-weight: 600; margin-bottom: 10px;">${member.role}</p>
+                    </div>
+                    <span style="font-size:0.85rem; color:#4f46e5; font-weight:600;">Details နှိပ်ကြည့်ရန် <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.75rem;"></i></span>
+                </div>`;
+            });
+
+            // Coming Soon Placeholder
+            gridHtml += `
+            <div class="liquid-glass" style="border: 2px dashed rgba(0,0,0,0.15); justify-content: center; align-items: center; background: rgba(255,255,255,0.15); cursor:default;">
+                <div style="width: 70px; height: 70px; border-radius: 50%; background: rgba(0,0,0,0.03); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: #9ca3af; margin-bottom: 15px;">
+                    <i class="fa-solid fa-user-plus"></i>
+                </div>
+                <h4 style="font-size: 1.1rem; color: #6b7280; font-weight: 700;">More Coming</h4>
+                <p style="font-size: 0.8rem; color: #9ca3af; margin-top: 5px; max-width: 220px; line-height:1.4;">ထပ်မံပူးပေါင်းလာမည့် အဖွဲ့ဝင်များ...</p>
+            </div>`;
+
+            document.getElementById('members-grid-container').innerHTML = gridHtml;
+            document.getElementById('structure-main-page').classList.remove('active');
+            document.getElementById('members-slider-page').classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // လူတစ်ယောက်ချင်းစီနှိပ်ရင် ပေါ်လာမည့် Popup စနစ်
+        function openDetail(depKey, idx) {
+            const member = departmentData[depKey].members[idx];
+            const accentColor = departmentData[depKey].accent;
+            
+            const content = `
+                <div style="text-align:center;">
+                    <div class="member-avatar" style="width:120px; height:120px;">
+                        <img src="${member.img}" alt="${member.name}" onerror="this.style.display='none'; this.parentNode.innerHTML='<i class=\'fa-solid fa-user\' style=\'font-size:3rem;color:#9ca3af;\'></i>'">
+                    </div>
+                    <div class="score-badge" style="background: linear-gradient(135deg, ${accentColor}, #a855f7); margin-bottom:15px;">
+                        <i class="fa-solid fa-star"></i> <span>${member.score}</span>
+                    </div>
+                    <h3 style="font-size:1.6rem; color:#1f2937; font-weight:800; margin-bottom:5px;">${member.name}</h3>
+                    <p style="font-size:0.95rem; color:${accentColor}; font-weight:600; margin-bottom:20px;">${member.role}</p>
+                    <p style="font-size:0.95rem; color:#4b5563; line-height:1.6; text-align:left; background:#f8fafc; padding:15px; border-radius:15px;">${member.info}</p>
+                    <div class="member-quote" style="border-left-color: ${accentColor};">
+                        <p>"${member.quote}"</p>
+                    </div>
+                </div>
+            `;
+            document.getElementById('modal-body-content').innerHTML = content;
+            document.getElementById('detail-modal').style.display = 'flex';
+        }
+
+        function closeModal(e) {
+            if(e.target.id === 'detail-modal') {
+                document.getElementById('detail-modal').style.display = 'none';
+            }
+        }
+
+        function closeMembersPage() {
+            document.getElementById('members-slider-page').classList.remove('active');
+            document.getElementById('structure-main-page').classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>
